@@ -1,0 +1,273 @@
+
+
+<!-- End Navigation Bar-->
+<!--<div class="container-fluid containerCls">
+    <div class="row">
+            <header id="topnav">
+                    <app-topbar>
+                    </app-topbar>
+                </header>
+     </div>   
+<div class="row">
+ <div class="col-xl-3 col">
+    <div class="sidenav" style="overflow-y: hidden;">
+            <div class="card-box card">
+               <h1>Total Reported</h1>
+               <div>837872</div>
+                </div>
+        <div class="card-box card" style="border-radius:none;">
+            
+            <div class="form-group row">
+                <div class="col-md-12 col-12">
+                        <h4 class="header-title mb-3">Search By Country </h4>
+                     
+                        
+                    <input type="text" id="example-placeholder" #search (keyup)="searchCountries(search.value)" class="form-control"
+                     placeholder="{{ 'Home.AffectedCountries.3' | translate }} {{countries.length}} {{ 'Home.AffectedCountries.1' | translate }}">
+                </div>
+               < <div class="col-md-4 col-4">
+                    <select class="custom-select" #sortBy (change)="sortCountries(sortBy.value,search.value)">
+                        <option selected="" disabled>{{ 'Home.AffectedCountries.4' }}</option>
+                        <option value="cases">{{ 'Home.AffectedCountries.5' }}</option>
+                        <option value="todayCases">{{ 'Home.AffectedCountries.6' }}</option>
+                        <option value="deaths">{{ 'Home.AffectedCountries.7' }}</option>
+                        <option value="todayDeaths">{{ 'Home.AffectedCountries.8' }}</option>
+                        <option value="recovered">{{ 'Home.AffectedCountries.9' }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="fa-3x text-center" [class.d-none]="!isLoadingCountries">
+                <i class="fas fa-circle-notch fa-spin m-2"></i>
+            </div>
+          <div class="infectedCountries" [class.d-none]="isLoadingCountries">
+              <!--  <perfect-scrollbar #perfectscrollbar style="height:346px;">
+                   
+                    <div class="infectedCountry" *ngFor="let country of countries">
+                        <a>
+                            <div class="infectedCountryFlag">
+                                <img *ngIf="countryCodes[country.country] else unknown" style="height: 30px;
+                                width: 40px;" src="assets/flags/{{countryCodes[country.country].toLowerCase()}}.svg" alt="{{country.country}}">
+                                <ng-template #unknown>
+                                    <img src="assets/flags/unknown.svg" alt="{{country.country}}">
+                                </ng-template>
+                            </div>
+                            <h5 class="infectedCountryName mt-0 mb-1">{{country.country}}</h5>
+                            <p class="infectedCountryDetails font-weight-bold">
+                                <span class="text-blue">{{country.cases | number}} {{ 'Home.AffectedCountries.10' | translate }}</span> &
+                                <span class="text-danger">{{country.deaths | number}} {{ 'Home.AffectedCountries.11' | translate }}</span>
+                            </p>
+                            <p class="infectedCountryCases text-blue">+{{country.todayCases | number}} {{ 'Home.AffectedCountries.10' | translate }}</p>
+                            <p class="infectedCountryDeaths text-danger">+{{country.todayDeaths | number}} {{ 'Home.AffectedCountries.11' | translate }}</p>
+                        </a>
+                    </div>
+                </perfect-scrollbar>
+
+
+            </div>
+        </div>
+       
+    </div>
+    </div>
+    <div class="col-xl-9 col">
+    <div class="main">
+        <router-outlet></router-outlet>
+    </div>
+    </div>
+</div>
+</div>
+<app-footer></app-footer>-->
+
+
+<!--<div class="container">
+        <header>
+          <app-topbar>
+            </app-topbar>
+        </header>
+      
+        <nav>
+          <div class="sidenav">
+                <div class="card-box card">
+                   <h1>Total Reported</h1>
+                   <div>837872</div>
+                    </div>
+            <div class="card-box card" style="border-radius:none;">
+                
+                <div class="form-group row">
+                    <div class="col-md-12 col-12">
+                            <h4 class="header-title mb-3">Search By Country </h4>
+                         
+                            
+                        <input type="text" id="example-placeholder" #search (keyup)="searchCountries(search.value)" class="form-control"
+                         placeholder="{{ 'Home.AffectedCountries.3' | translate }} {{countries.length}} {{ 'Home.AffectedCountries.1' | translate }}">
+                    </div>
+                   <div class="col-md-4 col-4">
+                        <select class="custom-select" #sortBy (change)="sortCountries(sortBy.value,search.value)">
+                            <option selected="" disabled>{{ 'Home.AffectedCountries.4' }}</option>
+                            <option value="cases">{{ 'Home.AffectedCountries.5' }}</option>
+                            <option value="todayCases">{{ 'Home.AffectedCountries.6' }}</option>
+                            <option value="deaths">{{ 'Home.AffectedCountries.7' }}</option>
+                            <option value="todayDeaths">{{ 'Home.AffectedCountries.8' }}</option>
+                            <option value="recovered">{{ 'Home.AffectedCountries.9' }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="fa-3x text-center" [class.d-none]="!isLoadingCountries">
+                    <i class="fas fa-circle-notch fa-spin m-2"></i>
+                </div>
+              <div class="infectedCountries" [class.d-none]="isLoadingCountries">
+                <perfect-scrollbar #perfectscrollbar style="height:346px;">
+                       
+                        <div class="infectedCountry" *ngFor="let country of countries">
+                            <a>
+                                <div class="infectedCountryFlag">
+                                    <img *ngIf="countryCodes[country.country] else unknown" style="height: 30px;
+                                    width: 40px;" src="assets/flags/{{countryCodes[country.country].toLowerCase()}}.svg" alt="{{country.country}}">
+                                    <ng-template #unknown>
+                                        <img src="assets/flags/unknown.svg" alt="{{country.country}}">
+                                    </ng-template>
+                                </div>
+                                <h5 class="infectedCountryName mt-0 mb-1">{{country.country}}</h5>
+                                <p class="infectedCountryDetails font-weight-bold">
+                                    <span class="text-blue">{{country.cases | number}} {{ 'Home.AffectedCountries.10' | translate }}</span> &
+                                    <span class="text-danger">{{country.deaths | number}} {{ 'Home.AffectedCountries.11' | translate }}</span>
+                                </p>
+                                <p class="infectedCountryCases text-blue">+{{country.todayCases | number}} {{ 'Home.AffectedCountries.10' | translate }}</p>
+                                <p class="infectedCountryDeaths text-danger">+{{country.todayDeaths | number}} {{ 'Home.AffectedCountries.11' | translate }}</p>
+                            </a>
+                        </div>
+                    </perfect-scrollbar>
+    
+    
+                </div>
+            </div>
+           
+        </div>
+        </nav>
+      
+        <main>
+          <router-outlet></router-outlet>
+        </main>
+      
+        <aside>
+        </aside>
+      
+        <footer>
+                <app-footer></app-footer>
+        </footer>
+      </div>-->
+
+      <div class="grid-container">
+            <div class="menu-icon">
+             <i class="fas fa-bars header__menu"></i>
+           </div>
+            
+           <header class="header">
+             <div class="header__search">Search...</div>
+             <div class="header__avatar">Kiran Kumar (100330827) </div>
+           </header>
+         
+           <aside class="sidenav">
+             <div class="sidenav__close-icon">
+               <i class="fas fa-times sidenav__brand-close"></i>
+             </div>
+             <div class="card-box card">
+                    <span>Total Reported</span>
+                    <h2>3,453,7872</h2>
+             </div>
+             <div class="card-box card" style="border-radius:none;">
+                
+                    <div class="form-group row">
+                        <div class="col-md-12 col-12">
+                                <h4 class="header-title mb-3">Search By Country </h4>
+                             
+                                
+                            <input type="text" id="example-placeholder" #search (keyup)="searchCountries(search.value)" class="form-control"
+                             placeholder="{{ 'Home.AffectedCountries.3' | translate }} {{countries.length}} {{ 'Home.AffectedCountries.1' | translate }}">
+                        </div>
+                      <!-- <div class="col-md-4 col-4">
+                            <select class="custom-select" #sortBy (change)="sortCountries(sortBy.value,search.value)">
+                                <option selected="" disabled>{{ 'Home.AffectedCountries.4' }}</option>
+                                <option value="cases">{{ 'Home.AffectedCountries.5' }}</option>
+                                <option value="todayCases">{{ 'Home.AffectedCountries.6' }}</option>
+                                <option value="deaths">{{ 'Home.AffectedCountries.7' }}</option>
+                                <option value="todayDeaths">{{ 'Home.AffectedCountries.8' }}</option>
+                                <option value="recovered">{{ 'Home.AffectedCountries.9' }}</option>
+                            </select>
+                        </div>-->
+                    </div>
+                    <div class="fa-3x text-center" [class.d-none]="!isLoadingCountries">
+                        <i class="fas fa-circle-notch fa-spin m-2"></i>
+                    </div>
+                  <div class="infectedCountries" [class.d-none]="isLoadingCountries">
+                    <perfect-scrollbar #perfectscrollbar style="height:346px;">
+                           
+                            <div class="infectedCountry" *ngFor="let country of countries">
+                                <a>
+                                    <div class="infectedCountryFlag">
+                                        <img *ngIf="countryCodes[country.country] else unknown" style="height: 30px;
+                                        width: 40px;" src="assets/flags/{{countryCodes[country.country].toLowerCase()}}.svg" alt="{{country.country}}">
+                                        <ng-template #unknown>
+                                            <img src="assets/flags/unknown.svg" alt="{{country.country}}">
+                                        </ng-template>
+                                    </div>
+                                    <h5 class="infectedCountryName mt-0 mb-1">{{country.country}}</h5>
+                                    <p class="infectedCountryDetails font-weight-bold">
+                                        <span class="text-orange">{{country.cases | number}} Cases</span> &
+                                        <span class="text-red">{{country.deaths | number}} Deaths</span>
+                                    </p>
+                                   <!-- <p class="infectedCountryCases text-blue">+{{country.todayCases | number}} {{ 'Home.AffectedCountries.10' | translate }}</p>
+                                    <p class="infectedCountryDeaths text-danger">+{{country.todayDeaths | number}} {{ 'Home.AffectedCountries.11' | translate }}</p>-->
+                                </a>
+                            </div>
+                        </perfect-scrollbar>
+        
+        
+                    </div>
+                </div>
+           <!--  <ul class="sidenav__list">
+               <li class="sidenav__list-item">Item One</li>
+               <li class="sidenav__list-item">Item Two</li>
+               <li class="sidenav__list-item">Item Three</li>
+               <li class="sidenav__list-item">Item Four</li>
+               <li class="sidenav__list-item">Item Five</li>
+             </ul>-->
+           </aside>
+         
+           <main class="main">
+                <router-outlet></router-outlet>
+            <!-- <div class="main-header">
+               <div class="main-header__heading">Hello User</div>
+               <div class="main-header__updates">Recent Items</div>
+             </div>
+         
+             <div class="main-overview">
+               <div class="overviewcard">
+                 <div class="overviewcard__icon">Overview</div>
+                 <div class="overviewcard__info">Card</div>
+               </div>
+               <div class="overviewcard">
+                 <div class="overviewcard__icon">Overview</div>
+                 <div class="overviewcard__info">Card</div>
+               </div>
+               <div class="overviewcard">
+                 <div class="overviewcard__icon">Overview</div>
+                 <div class="overviewcard__info">Card</div>
+               </div>
+               <div class="overviewcard">
+                 <div class="overviewcard__icon">Overview</div>
+                 <div class="overviewcard__info">Card</div>
+               </div>
+             </div>
+         
+             <div class="main-cards">
+               <div class="card">Card</div>
+               <div class="card">Card</div>
+               <div class="card">Card</div>
+             </div>-->
+           </main>
+         
+           <footer class="footer">
+             <div class="footer__copyright">&copy; 2020 s@V9Immigration</div>
+             <div class="footer__signature">Made with love by V9Immigration</div>
+           </footer>
+         </div>
