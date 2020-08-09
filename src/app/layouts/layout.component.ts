@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit , ViewChild} from '@angular/core';
+import { Component, OnInit, AfterViewInit , ViewChild, AfterContentInit, AfterContentChecked, OnChanges} from '@angular/core';
 import {
   GetdataService
 } from '../core/services/getdata.service';
@@ -10,48 +10,48 @@ import {
   isUndefined
 } from 'util';
 import COUNTRY_CODES from '../shared/utils/countries';
+import { trim } from '@amcharts/amcharts4/.internal/core/utils/Utils';
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss']
 })
-export class LayoutComponent implements OnInit, AfterViewInit {
+export class LayoutComponent implements OnInit, AfterContentChecked {
   @ViewChild(PerfectScrollbarComponent) public directiveScroll: PerfectScrollbarComponent;
   public fuse: any;
   showMobileMenu = false;
   public sortType = "todayCases";
-  
   public countryCodes = COUNTRY_CODES;
+  public total_cases = 0;
   public isLoadingCountries: boolean = true;
   public countries: any = [];
+  public temp_countries: any = [];
   constructor(private _getDataService: GetdataService,) { }
 
   ngOnInit() {
     this._getDataService.countryList.subscribe((res)=>{
-      this.fuse = res;
-      console.log('fuse', res);
-      this.countries =this.fuse;
+      console.log(res);
+      if(res){
+        this.countries = res;
+        res.forEach((e:any) => {
+          this.total_cases += e.cases;
+        });
+        this.sortCountries("cases","");
+      }
     });
   }
 
-  ngAfterViewInit() {
-    this._getDataService.countryList.subscribe((res)=>{
-      this.fuse = res;
-      console.log('fuse', res);
-      this.isLoadingCountries = false;
-      this.countries = this.fuse;
-    });
+  ngAfterContentChecked() {
+
   }
   searchCountries(key) {
-    console.log('key', key);
-    if (key) {
-      this.countries = this.fuse.search(key);
-      if (isUndefined(this.directiveScroll)) return;
-      this.directiveScroll.directiveRef.scrollToTop()
-      return
+    if(trim(key)){
+      this.countries = this.temp_countries.filter( obj => {
+          return (obj.country.toLowerCase().indexOf(key.toLowerCase()) > -1) ? true : false;
+      });
+    } else {
+      this.countries = this.temp_countries;
     }
-    this.countries = this.fuse.list;
-    console.log('searhc', this.countries);
   }
   sortCountries(key, skey) {
     this.isLoadingCountries = true;
@@ -59,9 +59,11 @@ export class LayoutComponent implements OnInit, AfterViewInit {
     this.loadSorted();
   }
   
-  loadSorted(){
+  loadSorted() {
     this._getDataService.getAll(this.sortType).subscribe((data: {}) => {
       this.countries = data;
+      //console.log("getAll =>", data);
+      this.temp_countries = data;
       this.isLoadingCountries = false;
     });
   }
