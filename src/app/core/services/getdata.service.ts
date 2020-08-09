@@ -10,11 +10,11 @@ HttpClient
   providedIn: 'root'
 })
 export class GetdataService {
+  public zone = new BehaviorSubject<any>('');
   public countryList = new BehaviorSubject<any>('');
- public  currentListResponse = this.countryList.asObservable();
+  public  currentListResponse = this.countryList.asObservable();
   constructor(private _http: HttpClient) { }
   private host = "https://api.coronastatistics.live";
-
 
   getAll(type): Observable<Country>{
     return this._http.get<Country>(`${this.host}/countries?sort=${type}`).pipe(

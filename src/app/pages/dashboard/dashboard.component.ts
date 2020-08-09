@@ -98,7 +98,7 @@ export class DashboardComponent implements OnInit, OnDestroy, DoCheck, AfterCont
   calculateSum(index, array = this.countries) {
     var total = 0
     for (var i = 0, _len = array.length; i < _len; i++) {
-      console.log('total', total);
+      //console.log('total', total);
       total += array[i][index]
     }
     return total
@@ -117,7 +117,7 @@ export class DashboardComponent implements OnInit, OnDestroy, DoCheck, AfterCont
         return 0;
       })
     } catch (e) {
-      console.error("ERROR while sorting", e);
+      //console.error("ERROR while sorting", e);
       return data;
     }
     return data
@@ -154,9 +154,8 @@ export class DashboardComponent implements OnInit, OnDestroy, DoCheck, AfterCont
         .subscribe(([getAllData, getTimelineData]) => {
           this.isLoading = false;
           this.isLoadingCountries = false;
-          this.isLoadingMap = false;
+          this.isLoadingMap = false;  
           this.countries = getAllData;
-          this.totalCases = this.calculateSum("cases");
           this.totalDeaths = this.calculateSum("deaths");
           this.totalRecoveries = this.calculateSum("recovered");
           this.totalCritical = this.calculateSum("critical");
@@ -175,11 +174,18 @@ export class DashboardComponent implements OnInit, OnDestroy, DoCheck, AfterCont
               "country"
             ]
           });
-          console.log('fuse', this.fuse);
+          //console.log('fuse', this.fuse);
           this.timeLine = getTimelineData;
           this.loadLineChart(false);
           this.loadRadar();
           this.loadPieChart();
+          this.zone.run(()=>{
+            this.totalCases = this.calculateSum("cases");
+            this._getDataService.countryList.next(this.fuse.list);
+            this.countries = getAllData;
+            this.loadMap("cases");
+          });
+         // this._getDataService.zone.next(this.zone);
         });
     });
   }
@@ -197,7 +203,7 @@ ngOnchanges(){
       return
     }
     this.countries = this.fuse.list;
-    console.log('countr', this.countries);
+    //console.log('countr', this.countries);
   }
 
   sortCountries(key, skey) {
@@ -233,7 +239,6 @@ ngOnchanges(){
     pieSeries.slices.template.strokeWidth = 1;
     pieSeries.slices.template.strokeOpacity = 1;
     this.pieChart = chart;
-
     this.loadMap("cases");
   }
 
@@ -296,15 +301,16 @@ ngOnchanges(){
     let fill = am4core.color(interfaceColors.getFor("alternativeBackground"));
     if (option == "recovered") {
       color = "#10c469";
-      fill = "#008ebc";
+      // fill = "#008ebc";
     } else if (option == "critical") {
       color = "#f9c851";
-      fill = "#00ace3";
+      // fill = "#00ace3";
     } else if (option == "deaths") {
       color = "#d86422";
-      fill = "grey";
+      // fill = "grey";
     }
-    this._getDataService.countryList.next(this.fuse.list);
+   
+    
     let mapData = [];
     this.fuse.list.forEach(element => {
       if (element[option] != 0) {
@@ -317,7 +323,7 @@ ngOnchanges(){
         });
       }
     });
-    console.log('mapdataapi', mapData);
+    //console.log('mapdataapi', mapData);
     /* let mapData = [
        { 'id': 'AF', 'name': 'Afghanistan', 'value': 32358260, 'color': am4core.color('#00ace3'),  fill: am4core.color("#00ace3")},
        { 'id': 'DZ', 'name': 'Algeria', 'value': 35980193, 'color':am4core.color('#54cbf2'),  fill: am4core.color("#54cbf2") },
