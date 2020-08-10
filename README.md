@@ -1,6 +1,5 @@
 
-
-## Screenshots
+<h1 align="center">Welcome to COVID-19/Corona Statistics Dashboard Angular 9</h1>
 
 ## Build the Angular project
 
@@ -22,8 +21,6 @@ npm install
 ```sh
 ng serve
 ```
-
-
 # API Endpoints
 
 * http://api.coronastatistics.live/all

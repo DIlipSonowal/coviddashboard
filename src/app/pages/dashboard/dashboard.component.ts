@@ -437,7 +437,25 @@ ngOnchanges(){
 
     let polygonTemplate = polygonSeries.mapPolygons.template;
     polygonTemplate.tooltipText = "{name}";
-    polygonTemplate.tooltipHTML = '<b style="padding:40px;text-align:center">{name}</b><br><a href="#" style="color:#000;padding-left: 34px;">More info</a>';
+    polygonTemplate.tooltipHTML  = `<center><strong><a href="./country/{name}" >{name}</a></strong></center>
+    <hr />
+    <table>
+    <tr>
+      <th align="left">Country</th>
+      <td>{name}</td>
+    </tr>
+    <tr>
+      <th align="left">Cases</th>
+      <td>{value}</td>
+    </tr>
+    <tr>
+      <th align="left">Id</th>
+      <td>{id}</td>
+    </tr>
+    </table>
+    <hr />`;
+    polygonSeries.tooltip.pointerOrientation = "vertical";
+    // polygonTemplate.tooltipHTML = '<b style="padding:40px;text-align:center">{name}</b><br><a href="#" style="color:#000;padding-left: 34px;">More info</a>';
     polygonSeries.calculateVisualCenter = true;
     polygonTemplate.tooltipPosition = "fixed";
     polygonSeries.tooltip.label.interactionsEnabled = true;

@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit , ViewChild, AfterContentInit, AfterContentChecked, OnChanges} from '@angular/core';
+import { Component, OnInit, AfterViewInit , ViewChild, AfterContentInit, AfterContentChecked, OnChanges, ElementRef} from '@angular/core';
 import {
   GetdataService
 } from '../core/services/getdata.service';
@@ -26,6 +26,8 @@ export class LayoutComponent implements OnInit, AfterContentChecked {
   public isLoadingCountries: boolean = true;
   public countries: any = [];
   public temp_countries: any = [];
+  openerChecker: boolean = true;
+  @ViewChild('asideId', { static: false}) public asideId: ElementRef;
   constructor(private _getDataService: GetdataService,) { }
 
   ngOnInit() {
@@ -33,6 +35,7 @@ export class LayoutComponent implements OnInit, AfterContentChecked {
       console.log(res);
       if(res){
         this.countries = res;
+        this.total_cases = 0;
         res.forEach((e:any) => {
           this.total_cases += e.cases;
         });
@@ -68,5 +71,13 @@ export class LayoutComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  
+  openerSidenav(){
+    if(this.openerChecker){
+       this.asideId.nativeElement.classList.add('opener-sidenav');
+    } else {
+      this.asideId.nativeElement.classList.remove('opener-sidenav');
+    }
+    this.openerChecker = !this.openerChecker;
+    console.log(this.openerChecker);
+  }
 }
