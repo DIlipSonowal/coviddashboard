@@ -21,7 +21,7 @@ import {
   combineLatest
 } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-
+import * as Fuse from 'fuse.js'
 
 @Component({
   selector: 'app-country',
@@ -32,7 +32,7 @@ export class CountryComponent implements OnInit, OnDestroy, DoCheck {
   private pieChart: am4charts.PieChart;
   private lineChart: am4charts.XYChart;
   private radarChart: am4charts.RadarChart
-
+  public fuse: any;
   public isLoading: boolean = true;
 
   public timeLine;
@@ -46,6 +46,7 @@ export class CountryComponent implements OnInit, OnDestroy, DoCheck {
   public activeCases=0;
   public casesPer1M=0;
   public finishedCases=0;
+  public todayRecovered=0;
   public countryCodes = COUNTRY_CODES;
   public country: any;
   public translations : any = {};
@@ -68,6 +69,7 @@ export class CountryComponent implements OnInit, OnDestroy, DoCheck {
       }
     });
   }
+
   async ngDoCheck() {
     this.translate.get(['Shared.Other.14', 'Shared.Other.15', 'Shared.Other.16', 'Shared.Other.17', 'Shared.TopCards.1', 'Shared.TopCards.3', 'Shared.TopCards.4'])
     .subscribe(translations => {
@@ -153,21 +155,24 @@ export class CountryComponent implements OnInit, OnDestroy, DoCheck {
       combineLatest(
         this._getDataService.getCountry(this.route.snapshot.paramMap.get("name")),
         this._getDataService.getTimelineCountry(nameTimeline)
-        )
-        .subscribe(([getAllData, getTimelineData]) => {
+        ).subscribe(([getAllData, getTimelineData]) => {
           this.isLoading = false;
-          this.country = getAllData;
-          this.totalCases = getAllData["cases"];
-          console.log('total case', this.totalCases, getAllData);
-          this.totalDeaths = getAllData["deaths"];
-          this.totalRecoveries = getAllData["recovered"];
-          this.totalCritical = getAllData["critical"];
-          this.todayCases = getAllData["todayCases"];
-          this.todayDeaths = getAllData["todayDeaths"];
-          this.activeCases = getAllData["active"];
-          this.casesPer1M = getAllData["casesPerOneMillion"];
-          this.finishedCases = this.totalDeaths + this.totalRecoveries;
-          this.timeLine = getTimelineData;
+          this.zone.run( ()=>{
+            this.country = getAllData;
+            this.totalCases = getAllData["cases"];
+          // console.log('total case', this.totalCases, getAllData);
+            this.totalDeaths = getAllData["deaths"];
+            this.totalRecoveries = getAllData["recovered"];
+            this.totalCritical = getAllData["critical"];
+            this.todayCases = getAllData["todayCases"];
+            this.todayDeaths = getAllData["todayDeaths"];
+            this.activeCases = getAllData["active"];
+            this.todayRecovered = getAllData["todayRecovered"];
+            this.finishedCases = this.totalDeaths + this.totalRecoveries;
+            this.timeLine = getTimelineData;
+          });     
+          
+          
           this.loadPieChart();
           this.loadLineChart();
           this.loadRadar();
@@ -236,7 +241,7 @@ export class CountryComponent implements OnInit, OnDestroy, DoCheck {
     chart.legend.labels.template.fill = am4core.color("#adb5bd");
 
     chart.cursor = new am4charts.XYCursor();
-    
+
     this.lineChart = chart;
   }
   loadPieChart() {
@@ -256,6 +261,7 @@ export class CountryComponent implements OnInit, OnDestroy, DoCheck {
       number: this.totalCritical,
       "color": am4core.color("#f9c851")
     });
+    
     let pieSeries = chart.series.push(new am4charts.PieSeries());
     pieSeries.dataFields.value = "number";
     pieSeries.dataFields.category = "type";
@@ -271,7 +277,6 @@ export class CountryComponent implements OnInit, OnDestroy, DoCheck {
   
   loadRadar() {
     let chart = am4core.create("radarChart", am4charts.RadarChart);
-
     // Add data
     chart.data = [{
       "category": this.translations.critical,
